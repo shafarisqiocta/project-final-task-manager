@@ -1,0 +1,14 @@
+# Environment
+.env
+
+# Binary
+*.exe
+*.out
+tmp/
+
+# Go
+vendor/
+
+# OS
+.DS_Store
+Thumbs.db
