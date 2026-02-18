@@ -5,6 +5,7 @@ import (
 	"os"
 	"project-final-task-manager/config"
 	"project-final-task-manager/handlers"
+	"project-final-task-manager/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -25,6 +26,17 @@ func main() {
 	// Public routes (tanpa JWT)
 	r.POST("/api/register", handlers.Register)
 	r.POST("/api/login", handlers.Login)
+
+	//protected routes (wajib jwt)
+	protected := r.Group("/api")
+	protected.Use(middleware.AuthMiddleware())
+	{
+		// Categories
+		protected.GET("/categories", handlers.GetAllCAtegory)
+		protected.POST("/categories", handlers.CreateCategory)
+		protected.PUT("/categories/:id", handlers.UpdateCategory)
+		protected.DELETE("/categories/:id", handlers.DeleteCategory)
+	}
 
 	// Jalankan server
 	port := os.Getenv("APP_PORT")
