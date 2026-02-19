@@ -36,6 +36,13 @@ func main() {
 		protected.POST("/categories", handlers.CreateCategory)
 		protected.PUT("/categories/:id", handlers.UpdateCategory)
 		protected.DELETE("/categories/:id", handlers.DeleteCategory)
+
+		// Projects
+		protected.GET("/projects", handlers.GetAllProjects)
+		protected.POST("/projects", handlers.CreateProject)
+		protected.GET("/projects/:id", handlers.GetProjectByID)
+		protected.PUT("/projects/:id", handlers.UpdateProject)
+		protected.DELETE("/projects/:id", handlers.DeleteProject)
 	}
 
 	// Jalankan server
