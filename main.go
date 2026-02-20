@@ -23,9 +23,11 @@ func main() {
 		c.JSON(200, gin.H{"message": "Task Manager API is running "})
 	})
 
-	// Public routes (tanpa JWT)
-	r.POST("/api/register", handlers.Register)
-	r.POST("/api/login", handlers.Login)
+	users := r.Group("/api/users")
+	{
+		users.POST("/register", handlers.Register) // jadi /api/users/register
+		users.POST("/login", handlers.Login)       // jadi /api/users/login
+	}
 
 	//protected routes (wajib jwt)
 	protected := r.Group("/api")
@@ -43,6 +45,13 @@ func main() {
 		protected.GET("/projects/:id", handlers.GetProjectByID)
 		protected.PUT("/projects/:id", handlers.UpdateProject)
 		protected.DELETE("/projects/:id", handlers.DeleteProject)
+
+		// Tasks
+		protected.GET("/projects/:id/tasks", handlers.GetAllTasks)
+		protected.POST("/projects/:id/tasks", handlers.CreateTask)
+		protected.GET("/projects/:id/tasks/:taskId", handlers.GetTaskByID)
+		protected.PUT("/projects/:id/tasks/:taskId", handlers.UpdateTask)
+		protected.DELETE("/projects/:id/tasks/:taskId", handlers.DeleteTask)
 	}
 
 	// Jalankan server
