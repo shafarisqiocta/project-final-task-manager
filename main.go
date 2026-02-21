@@ -53,8 +53,14 @@ func main() {
 		protected.DELETE("/projects/:id/tasks/:taskId", handlers.DeleteTask)
 	}
 
-	// Jalankan server
-	port := os.Getenv("APP_PORT")
+	// Railway inject PORT, fallback ke APP_PORT kalau lokal
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = os.Getenv("APP_PORT")
+	}
+	if port == "" {
+		port = "8080" // default fallback
+	}
 	r.Run(":" + port)
 
 }
