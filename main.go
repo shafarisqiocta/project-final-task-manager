@@ -12,9 +12,8 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Gagal load .env:", err)
+	if err := godotenv.Load(); err != nil {
+		log.Println(".env file tidak ditemukan, menggunakan system environment variables")
 	}
 	config.ConnectDB()
 
