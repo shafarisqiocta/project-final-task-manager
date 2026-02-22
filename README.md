@@ -20,45 +20,46 @@ godotenv - Load environment variables
 
 #Database Schema (ERD)
 Aplikasi ini menggunakan 4 tabel yang saling berelasi:
-┌─────────────┐
-│   users     │
-├─────────────┤
-│ id (PK)     │
-│ name        │
-│ email       │
-│ password    │
-│ created_at  │
-│ updated_at  │
-└──────┬──────┘
-       │ 1
-       │
-       │ N
-┌──────▼──────────┐
-│   projects      │
-├─────────────────┤
-│ id (PK)         │
-│ user_id (FK)    │
-│ name            │
-│ description     │
-│ created_at      │
-│ updated_at      │
-└──────┬──────────┘
-       │ 1
-       │
-       │ N
-┌──────▼──────────┐       ┌──────────────┐
-│     tasks       │       │ categories   │
-├─────────────────┤       ├──────────────┤
-│ id (PK)         │◄──N───│ id (PK)      │
-│ project_id (FK) │       │ name         │
-│ category_id (FK)│       │ created_at   │
-│ title           │       │ updated_at   │
-│ description     │       └──────────────┘
-│ status          │
-│ deadline        │
-│ created_at      │
-│ updated_at      │
-└─────────────────┘
+```text
++----------------+
+|     users      |
++----------------+
+| id (PK)        |
+| name           |
+| email          |
+| password       |
+| created_at     |
+| updated_at     |
++----------------+
+        | 1
+        |
+        | N
++----------------+
+|    projects    |
++----------------+
+| id (PK)        |
+| user_id (FK)   |
+| name           |
+| description    |
+| created_at     |
+| updated_at     |
++----------------+
+        | 1
+        |
+        | N
++----------------+        +----------------+
+|      tasks     |        |   categories   |
++----------------+        +----------------+
+| id (PK)        |<---N---| id (PK)        |
+| project_id(FK) |        | name           |
+| category_id(FK)|        | created_at     |
+| title          |        | updated_at     |
+| status         |        +----------------+
+| deadline       |
+| created_at     |
+| updated_at     |
++----------------+
+```
 
 #Relasi Antar Tabel:
 users → projects : One-to-Many (1 user bisa punya banyak project)
@@ -437,30 +438,38 @@ PORT=8080
 Railway akan otomatis inject PORT, dan database credentials akan auto-generate saat membuat PostgreSQL service.
 
 # Project Structure
+```bash
 project-final-task-manager/
+│
 ├── config/
 │   └── database.go          # Koneksi database & auto-create tables
+│
 ├── handlers/
 │   ├── auth_handler.go      # Register & Login
 │   ├── category_handler.go  # CRUD Categories
 │   ├── project_handler.go   # CRUD Projects
 │   └── task_handler.go      # CRUD Tasks
+│
 ├── helpers/
 │   ├── bcrypt.go            # Hash & verify password
 │   └── jwt.go               # Generate & validate JWT
+│
 ├── middleware/
 │   └── auth_middleware.go   # JWT authentication middleware
+│
 ├── models/
 │   ├── user.go
 │   ├── category.go
 │   ├── project.go
 │   └── task.go
+│
 ├── .env                     # Environment variables (local)
 ├── .gitignore
 ├── go.mod
 ├── go.sum
 ├── main.go                  # Entry point & routing
 └── README.md
+```
 
 # Notes
 - Database schema akan otomatis dibuat saat pertama kali server dijalankan
